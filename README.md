@@ -21,7 +21,7 @@ Aplikasi web katalog produk afiliasi menggunakan Django dan PostgreSQL. Fitur ut
 - Python 
 
 ## Struktur Folder
-`
+```
 affiliate_web/
 ├── affiliate_app/
 ├── templates/
@@ -29,7 +29,7 @@ affiliate_web/
 ├── media/
 ├── manage.py
 └── db.sqlite3 (jika tidak menggunakan PostgreSQL)
-`
+```
 
 ## Instalasi
 
