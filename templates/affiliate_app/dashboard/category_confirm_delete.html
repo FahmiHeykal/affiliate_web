@@ -1,0 +1,21 @@
+{% extends "affiliate_app/dashboard/base.html" %}
+
+{% block page_title %}Hapus Kategori{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Apakah Anda yakin ingin menghapus kategori ini?</h5>
+        <p class="card-text">Kategori <strong>{{ category.name }}</strong> akan dihapus secara permanen.</p>
+        <p class="text-danger">Peringatan: Semua produk dalam kategori ini juga akan dihapus!</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'dashboard_category_list' %}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

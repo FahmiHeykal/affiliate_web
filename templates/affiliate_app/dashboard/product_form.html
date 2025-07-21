@@ -1,0 +1,24 @@
+{% extends "affiliate_app/dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}{% if form.instance.pk %}Edit Produk{% else %}Tambah Produk Baru{% endif %}{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% if form.instance.pk %}{% url 'dashboard_product_update' form.instance.pk %}{% else %}{% url 'dashboard_product_list' %}{% endif %}" 
+                   class="btn btn-secondary">
+                    Batal
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Update{% else %}Simpan{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

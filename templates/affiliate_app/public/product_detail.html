@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <p class="text-muted">Kategori: <a href="{{ product.category.get_absolute_url }}" class="text-decoration-none">{{ product.category.name }}</a></p>
+            <h3 class="text-success mb-4">{{ product.get_price_display }}</h3>
+            
+            <div class="mb-4">
+                <h4>Deskripsi</h4>
+                <p>{{ product.description }}</p>
+            </div>
+            
+            <a href="{{ product.affiliate_link }}" class="btn btn-primary btn-lg" target="_blank">
+                <i class="bi bi-cart-plus me-2"></i> Beli Sekarang
+            </a>
+        </div>
+    </div>
+    
+    {% if related_products %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Produk Terkait</h3>
+            <div class="row g-4">
+                {% for product in related_products %}
+                <div class="col-md-3 col-6">
+                    <div class="card h-100">
+                        <img src="{{ product.image.url }}" class="card-img-top" style="height: 150px; object-fit: cover;" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name|truncatechars:30 }}</h5>
+                            <p class="card-text text-success fw-bold">{{ product.get_price_display  }}</p>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-primary btn-sm">Detail</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

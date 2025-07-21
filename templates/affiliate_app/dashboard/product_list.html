@@ -1,0 +1,65 @@
+{% extends "affiliate_app/dashboard/base.html" %}
+{% load static %}
+
+{% block page_title %}Manajemen Produk{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'dashboard_product_create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i> Tambah Produk
+</a>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td><img src="{{ product.image.url }}" width="50" height="50" class="rounded"></td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category.name }}</td>
+                        <td>{{ product.get_price_display }}</td>
+                        <td>
+                            {% if product.is_active %}
+                                <span class="badge bg-success">Aktif</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Nonaktif</span>
+                            {% endif %}
+                            {% if product.is_featured %}
+                                <span class="badge bg-warning text-dark ms-1">Featured</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'dashboard_product_update' product.pk %}" class="btn btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'dashboard_product_delete' product.pk %}" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">Belum ada produk</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

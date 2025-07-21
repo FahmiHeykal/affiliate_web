@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block main_class %}dashboard-layout{% endblock %}
+
+{% block extra_css %}
+<style>
+    .sidebar {
+        min-height: calc(100vh - 56px);
+        background: #212529;
+    }
+    .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.75);
+        border-radius: 0.25rem;
+        margin: 0.1rem 0;
+    }
+    .sidebar .nav-link:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .sidebar .nav-link.active {
+        color: white;
+        background: rgba(255, 255, 255, 0.2);
+    }
+    .dashboard-layout {
+        padding-top: 56px; 
+    }
+    .logout-form button {
+        border: none;
+        background: none;
+        padding: 0;
+        color: rgba(255, 255, 255, 0.75);
+        width: 100%;
+        text-align: left;
+    }
+    .logout-form button:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar bg-dark">
+            <div class="position-sticky pt-3 d-flex flex-column h-100">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}" 
+                           href="{% url 'dashboard_home' %}">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}" 
+                           href="{% url 'dashboard_product_list' %}">
+                            <i class="bi bi-box-seam me-2"></i> Produk
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}" 
+                           href="{% url 'dashboard_category_list' %}">
+                            <i class="bi bi-tags me-2"></i> Kategori
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Sidebar Logout -->
+                <div class="mt-auto pt-4">
+                    <form method="post" action="{% url 'dashboard_logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">{% block page_title %}{% endblock %}</h1>
+                <div class="btn-toolbar mb-2 mb-md-0 d-flex align-items-center gap-2">
+                    {% block page_actions %}{% endblock %}
+                    
+                    <!-- Header Logout Button -->
+                    <form method="post" action="{% url 'dashboard_logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% block dashboard_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}

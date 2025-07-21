@@ -1,0 +1,20 @@
+{% extends "affiliate_app/dashboard/base.html" %}
+
+{% block page_title %}Hapus Produk{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Apakah Anda yakin ingin menghapus produk ini?</h5>
+        <p class="card-text">Produk <strong>{{ product.name }}</strong> akan dihapus secara permanen.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'dashboard_product_list' %}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

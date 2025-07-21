@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'public_home' %}">Beranda</a></li>
+            <li class="breadcrumb-item active">Kategori: {{ category.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Produk Kategori: {{ category.name }}</h1>
+        <span class="badge bg-primary">{{ products|length }} produk</span>
+    </div>
+
+    {% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-md-4 col-lg-3">
+            <div class="card h-100">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name|truncatechars:30 }}</h5>
+                    <p class="text-success fw-bold">{{ product.get_price_display }}</p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'public_product_detail' product.slug %}" class="btn btn-primary btn-sm">
+                            Detail
+                        </a>
+                        {% if product.affiliate_link %}
+                            <a href="{{ product.affiliate_link }}" target="_blank" class="btn btn-outline-success btn-sm">
+                                Beli Sekarang
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Sebelumnya</a>
+                </li>
+            {% endif %}
+            
+            <li class="page-item active">
+                <span class="page-link">
+                    Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Selanjutnya &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-warning text-center py-5">
+        <div class="py-4">
+            <i class="bi bi-exclamation-triangle-fill display-4 text-warning mb-3"></i>
+            <h3>Tidak ada produk dalam kategori ini</h3>
+            <p class="lead">Silakan cek kembali nanti atau lihat kategori lainnya</p>
+            <a href="{% url 'public_home' %}" class="btn btn-primary mt-3">
+                Kembali ke Beranda
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
